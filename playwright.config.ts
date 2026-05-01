@@ -73,7 +73,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    // command to clear and un your server
+    // command to clear db port 3306 if anything is running and start your server
     command: 'powershell -Command "try { $conn = Get-NetTCPConnection -LocalPort 3306 -ErrorAction Stop; Stop-Process -Id $conn.OwningProcess -Force } catch {}; docker compose up -d"',
     cwd: __dirname,
     // url Playwright waits before tests start
