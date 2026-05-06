@@ -9,9 +9,9 @@ test.describe('Product Sorting Tests', () => {
     test('verify that default sorting option sorts products correctly', async ({ page }) => {
         const mainPage = new MainPage(page);
 
-        const uiTitles = await (await (await mainPage.navigateToMainPage())
-            .selectSortingOption('Default sorting'))
-            .getProductTitles();
+        await mainPage.navigateToMainPage();
+        await mainPage.selectSortingOption('Default sorting');
+        const uiTitles = await mainPage.getProductTitles();
 
         const sortedTitles = [...uiTitles].sort();
         expect(uiTitles).toEqual(sortedTitles);

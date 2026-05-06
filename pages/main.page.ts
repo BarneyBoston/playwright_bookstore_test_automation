@@ -1,45 +1,39 @@
-import { test, Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { BasePage } from './base.page';
 
+/**
+ * MainPage class represents the primary landing page and provides 
+ * technical interactions with its UI elements.
+ */
 export class MainPage extends BasePage {
-
-    private readonly sortingDropdown: string = '.orderby';
-    private readonly productTitlesLocator: string = '.product-title';
+    
+    private readonly sortingDropdown = '.orderby';
+    private readonly productTitlesLocator = '.woocommerce-loop-product__title';
 
     constructor(page: Page) {
         super(page);
     }
-    
+
     /**
-     * Navigates to the base URL and returns an instance of MainPage.
-     * @returns A promise that resolves to the MainPage instance.
+     * Navigates to the application's base URL.
      */
-    async navigateToMainPage(): Promise<MainPage> {
-        return await test.step('Navigate to main page', async () => {
-            await this.page.goto('/');
-            return this;
-        });
+    async navigateToMainPage(): Promise<void> {
+        await this.goToUrl('/');
     }
 
     /**
-     * Selects a sorting option from the dropdown.
-     * @param optionText - The visible text of the option to select.
-     * @returns A promise that resolves to the current MainPage instance for chaining.
+     * Selects a sorting option from the dropdown by its visible text.
+     * @param optionText - The visible label of the option (e.g., 'Sort by price').
      */
-    async selectSortingOption(optionText: string): Promise<this> {
-        return await test.step(`Select sorting option as ${optionText}`, async () => {
-            await this.page.locator(this.sortingDropdown).selectOption({ label: optionText });
-            return this;
-        });
+    async selectSortingOption(optionText: string): Promise<void> {
+        await this.selectDropdownOption(this.sortingDropdown, { label: optionText });
     }
 
     /**
-     * Retrieves all product titles visible on the page.
-     * @returns A promise that resolves to an array of product title strings.
+     * Retrieves all product titles visible on the page as an array of strings.
+     * @returns An array containing text content of each product title.
      */
     async getProductTitles(): Promise<string[]> {
-        return await test.step('Get all product titles', async () => {
-            return await this.page.locator(this.productTitlesLocator).allTextContents();
-        });
+        return await this.getTextContents(this.productTitlesLocator);
     }
 }

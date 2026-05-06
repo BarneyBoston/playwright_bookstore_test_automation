@@ -24,6 +24,26 @@ export abstract class BasePage {
         await this.toLocator(selector).fill(value);
     }
 
+    // selects an option from a dropdown and waits for the page to stabilize
+    protected async selectDropdownOption(
+        selector: string | Locator,
+        option: Parameters<Locator['selectOption']>[0]
+    ) {
+        await this.toLocator(selector).selectOption(option);
+        await this.page.waitForLoadState('load');
+    }
+
+    // waits for the first matching element to be visible
+    protected async waitForVisible(selector: string | Locator) {
+        await this.toLocator(selector).first().waitFor({ state: 'visible' });
+    }
+
+    // retrieves text contents from a locator after ensuring it is visible
+    protected async getTextContents(selector: string | Locator): Promise<string[]> {
+        await this.waitForVisible(selector);
+        return await this.toLocator(selector).allTextContents();
+    }
+
     // asserts that the specified element is visible on the page
     protected async expectElementVisible(selector: string | Locator) {
         await expect(this.toLocator(selector)).toBeVisible();
