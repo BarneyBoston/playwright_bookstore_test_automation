@@ -1,14 +1,11 @@
-import test, { expect } from "@playwright/test";
-import { MainPage } from "../pages/main.page.ts";
+import { test, expect } from "../src/fixtures/base";
 
 test.describe('Product Sorting Tests', () => {
 
     /**
      * Test Case: Verify that default sorting option sorts products correctly.
      */
-    test('verify that default sorting option sorts products correctly', async ({ page }) => {
-        const mainPage = new MainPage(page);
-
+    test('verify that default sorting option sorts products correctly', async ({ mainPage }) => {
         await mainPage.navigateToMainPage();
         await mainPage.selectSortingOption('Default sorting');
         const uiTitles = await mainPage.getProductTitles();
